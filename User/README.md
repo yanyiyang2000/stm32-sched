@@ -31,7 +31,7 @@ Now the processor is in **Thread Mode** and `MSP` is used.
 
 
 ## Phase 2: Start the First Task
-An **SVC exception** is triggered by the `svc 0` instruction in `demo_4_enter.c`.
+An **SVC exception** is triggered by the `svc 0` instruction in `main.c`.
 
 Upon the entry of the exception, the processor (hardware) will do the following:
 1. Push `R0` - `R3`, `R12`, `SP`, `LR`, `PC` and `xPSR` to the stack pointed to by `MSP`.
@@ -39,7 +39,7 @@ Upon the entry of the exception, the processor (hardware) will do the following:
 3. ... (See *Armv7-M Architecture Reference Manual B1.5.6 Exception entry behavior*)
 4. Branch to **SVC Handler**.
 
-The **SVC Handler** (software, defined in `demo_4_isr.c`) will then do the following:
+The **SVC Handler** (software, defined in `isr.c`) will then do the following:
 1. Select a task.
 2. Set `PSP` to the top of the stack of the task.
 3. Set `R4` - `R11` according to the **Task Control Block (TCB)** of the task.
@@ -67,7 +67,7 @@ Upon the entry of the interrupt, the processor (hardware) will do the following:
 3. ... (See *Armv7-M Architecture Reference Manual B1.5.6 Exception entry behavior*)
 4. Branch to **SysTick Handler**.
 
-The **SysTick Handler** (software, defined in `demo_4_isr.c`) will then do the following:
+The **SysTick Handler** (software, defined in `isr.c`) will then do the following:
 1. Save `PSP` of the current task into its TCB.
 2. Save `R4` - `R11` of the current task into its TCB.
 3. Select a task.
