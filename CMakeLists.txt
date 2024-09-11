@@ -48,7 +48,7 @@ add_link_options(
     -Wl,--gc-sections           # enable garbage collection of unused sections
     -Wl,--trace                 # prints name of input files (use --verbose for more detailed information)
     -Wl,--print-memory-usage
-    -Wl,--print-map
+    # -Wl,--print-map
     -T "${PROJECT_SOURCE_DIR}/User/Config/stm32l4xx_gcc.ld" # use custom linker script
 )
 
