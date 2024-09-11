@@ -43,7 +43,7 @@ The **SVC Handler** (software, defined in `isr.c`) will then do the following:
 1. Select a task.
 2. Set `PSP` to the top of the task stack specified by the task's **Task Control Block**.
 3. Pop the values of `R4` - `R11` of the task from the stack pointed to by `PSP`.
-4. Set `LR` to `0xFFFFFFFD`[^1] to instruct the processor to enter **Thread Mode** and use PSP` as `SP` upon exception return[^2].
+4. Set `LR` to `0xFFFFFFFD`[^1] to instruct the processor to enter **Thread Mode** and use `PSP` as `SP` upon exception return[^2].
 5. Enable **SysTick interrupt** to perform task switch later on.
 [^1]: See *Armv7-M Architecture Reference Manual Table B1-8* for the effects of different `LR` values.
 [^2]: Setting `LR` to `0xFFFFFFFD` will cause the hardware to set the `SPSEL` bit of `CONTROL` to 1. (*Armv7-M Architecture Reference Manual B1.5.8 Exception return behavior*)
