@@ -29,7 +29,6 @@ add_compile_definitions(
 add_compile_options(
     -mthumb
     -mcpu=cortex-m4
-    # -mfloat-abi=hard
     -mfpu=fpv4-sp-d16
     -Wall                       # enable all warnings
     -Wno-missing-attributes     # disable warning about missing attributes
@@ -38,18 +37,14 @@ add_compile_options(
 )
 
 add_link_options(
-    -mthumb
-    -mcpu=cortex-m4
-    # -mfloat-abi=hard
-    -mfpu=fpv4-sp-d16
     -nostartfiles               # use custom crt0.S (otherwise newlib's crt0.S will be used)
     --specs=nano.specs          # use libc_nano.a (otherwise libc.a will be used)
     --specs=nosys.specs         # use libnosys.a (provides stub syscalls such as `_exit` used by the custom crt0.S)
     -Wl,--gc-sections           # enable garbage collection of unused sections
-    -Wl,--trace                 # prints name of input files (use --verbose for more detailed information)
-    -Wl,--print-memory-usage
-    # -Wl,--print-map
-    -T "${PROJECT_SOURCE_DIR}/User/Config/stm32l4xx_gcc.ld" # use custom linker script
+    -Wl,--trace                 # print name of input files (use --verbose for more detailed information)
+    -Wl,--print-memory-usage    # print memory usage
+    # -Wl,--print-map           # print memory map
+    -T "${PROJECT_SOURCE_DIR}/User/Config/stm32l4xx_gcc.ld"
 )
 
 add_subdirectory(
