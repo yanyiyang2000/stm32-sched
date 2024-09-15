@@ -6,7 +6,6 @@
 #include "core_cm4.h"
 
 /* User API */
-#include "task.h"
 #include "isr.h"
 
 
@@ -29,8 +28,8 @@
  * - Some registers (i.e., `R0` and `R1`) are used to perform context switch so 
  *   no usage of the said registers should precede the context switch code. 
  *   Hence, attribute `naked` is used to prevent the compiler from adding
- *   prologue and epilogue before and after the function. Prologue and epilogue 
- *   are instead added manually after the context switch code if needed.
+ *   prologue and epilogue before and after the code. Prologue and epilogue are 
+ *   instead added manually after the context switch code if needed.
  * 
  * - In order to keep the assembly code as little as possible, the task switch 
  *   is performed in function `select_next_task`. Upon the return of the 
@@ -45,30 +44,30 @@ void __attribute__ ((naked)) SysTick_Handler() {
     __ASM volatile ("stmdb  r0!, {r4-r11}");        // push r4 - r11 onto process stack and decrement r0
 
     // Save current task's PSP
-    __ASM volatile ("ldr    r1, =curr_tcb_ptr");    // r1 <- addr(curr_tcb_ptr)
+    __ASM volatile ("ldr    r1, =tm_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
     __ASM volatile ("ldr    r1, [r1]");             // r1 <- addr(curr_tcb)
-    __ASM volatile ("str    r0, [r1]");             // curr_tcb[0:4] <- r0
+    __ASM volatile ("str    r0, [r1]");             // curr_tcb.stack_top <- r0
 
     // Save ISR's LR
     __ASM volatile ("stmdb  sp!, {lr}");            // push lr onto main stack and decrement sp
 
-    // Switch task
-    __ASM volatile ("bl     select_next_task");
+    // Select a new task
+    __ASM volatile ("bl     tm_select_task");
 
     // Restore ISR's LR
     __ASM volatile ("ldmia  sp!, {lr}");            // pop lr from main stack and increment sp
 
     // Restore next task's PSP
-    __ASM volatile ("ldr    r1, =curr_tcb_ptr");    // r1 <- addr(curr_tcb_ptr)
+    __ASM volatile ("ldr    r1, =tm_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
     __ASM volatile ("ldr    r1, [r1]");             // r1 <- addr(curr_tcb)
-    __ASM volatile ("ldr    r0, [r1]");             // r0 <- curr_tcb[0:4]
+    __ASM volatile ("ldr    r0, [r1]");             // r0 <- curr_tcb.stack_top
     
     // Restore next task's R4 - R11
     __ASM volatile ("ldmia  r0!, {r4-r11}");        // pop r4 - r11 from process stack and increment r0
     __ASM volatile ("msr    psp, r0");              // psp <- r0
 
     // Return
-    __ASM volatile ("bx    lr");
+    __ASM volatile ("bx     lr");
 }
 
 /**
@@ -92,21 +91,25 @@ void __attribute__ ((naked)) SysTick_Handler() {
  * - Some registers (i.e., `R0` and `R1`) are used to perform context switch so 
  *   no usage of the said registers should precede the context switch code. 
  *   Hence, attribute `naked` is used to prevent the compiler from adding 
- *   prologue and epilogue before and after the function. Prologue and epilogue 
- *   are instead added manually after the context switch code if needed.
+ *   prologue and epilogue before and after the code. Prologue and epilogue are 
+ *   instead added manually after the context switch code if needed.
  */
 void __attribute__ ((naked)) SVC_Handler() {
+    // Select the first task
+    __ASM volatile ("bl     tm_select_task");
+
     // Set task's PSP
-    __ASM volatile ("ldr   r1, =curr_tcb_ptr"); // r1 <- addr(curr_tcb_ptr)
-    __ASM volatile ("ldr   r1, [r1]");          // r1 <- addr(curr_tcb)
-    __ASM volatile ("ldr   r0, [r1]");          // r0 <- curr_tcb[0:4]
+    __ASM volatile ("ldr    r1, =tm_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
+    __ASM volatile ("ldr    r1, [r1]");             // r1 <- addr(curr_tcb)
+    __ASM volatile ("ldr    r0, [r1]");             // r0 <- curr_tcb.stack_top
 
     // Set task's R4 - R11
-    __ASM volatile ("ldmia r0!, {r4-r11}");     // pop r4 - r11 from process stack and update r0
-    __ASM volatile ("msr   psp, r0");           // psp <- r0
+    __ASM volatile ("ldmia  r0!, {r4-r11}");        // pop r4 - r11 from process stack and update r0
+    __ASM volatile ("msr    psp, r0");              // psp <- r0
 
-    // TODO: Enable SysTick interrupt to delegate task switch to SysTick Handler
-
+    // Set ISR's LR to 0xFFFFFFFD to instruct the processor to enter Thread Mode and use PSP upon return
     __ASM volatile ("ldr    lr, =0xFFFFFFFD");
+
+    // Return
     __ASM volatile ("bx     lr");
 }

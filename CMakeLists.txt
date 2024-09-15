@@ -44,6 +44,7 @@ add_link_options(
     -Wl,--trace                 # print name of input files (use --verbose for more detailed information)
     -Wl,--print-memory-usage    # print memory usage
     # -Wl,--print-map           # print memory map
+    # -T "${PROJECT_SOURCE_DIR}/CMSIS/Device/ST/STM32L4xx/Config/stm32l4xx_gcc.ld"
     -T "${PROJECT_SOURCE_DIR}/User/Config/stm32l4xx_gcc.ld"
 )
 

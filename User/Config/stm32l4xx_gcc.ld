@@ -50,8 +50,8 @@ __RAM_SIZE = 96K;
     <o1> Heap Size (in Bytes)  <0x0-0xFFFFFFFF:8>
   </h>
   -----------------------------------------------------------------------------*/
-__STACK_SIZE = 0x00000200;
-__HEAP_SIZE  = 0x00000400;
+__STACK_SIZE = 1024;
+__HEAP_SIZE  = 1024;
 
 /*
  *-------------------- <<< end of configuration section >>> -------------------
@@ -214,7 +214,7 @@ SECTIONS
     __HeapLimit = .;
   } > RAM
 
-  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE) (NOLOAD) :
+  .stack (NOLOAD) :
   {
     . = ALIGN(8);
     __StackLimit = .;
