@@ -1,7 +1,14 @@
-## Introduction
-This is a demonstration of a simple task scheduler running on an ARMv7-M processor (Cortex-M4). It is assumed that the FPU of the processor is not enabled for the simplicity.
+# Table of Contents
+- [Introduction](#introduction)
+- [Registers of Interest](#registers-of-interest)
+- [Phase 1: Power On and Reset](#phase-1-power-on-and-reset)
+- [Phase 2: Start the First Task](#phase-2-start-the-first-task)
+- [Phase 3: Automatic Task Switch](#phase-3-automatic-task-switch)
 
-## Registers of Interest
+# Introduction
+This is a demonstration of a custom Task Scheduler running on an ARMv7-M processor (Cortex-M4). It is assumed that the FPU of the processor is not enabled for the simplicity.
+
+# Registers of Interest
 - `R0` - `R12`
 - `R13` (a.k.a. `SP`)
     - Alias to `MSP` if `SPSEL` bit of the `CONTROL` register is 0
@@ -11,7 +18,7 @@ This is a demonstration of a simple task scheduler running on an ARMv7-M process
 - `xPSR`
 - `CONTROL`
 
-## Phase 1: Power On and Reset
+# Phase 1: Power On and Reset
 A **Reset exception** is triggered when the processor is powered on. 
 
 Upon the entry of the exception, the processor (hardware) will do the following:
@@ -23,14 +30,15 @@ Upon the entry of the exception, the processor (hardware) will do the following:
 6. Branch to **Reset Handler**.
 
 The **Reset Handler** (software, defined in `startup_stm32l4xx.c`) will then do the following:
-1. Set `PSP` to the top of the stack (the address is defined in the linker script).
-2. Initialize `.bss` and `.data` section in RAM.
-3. Call `main`
+1. Set `PSP` to the top of the `.stack` section (defined in the linker script). 
+2. Call `SystemInit` to remap vector table and set up FPU  (defined in `system_stm32l4xx.c`).
+3. Call `cmsis_start` to initialize `.bss` and `.data` section in RAM (defined in `cmsis_gcc_m.h`).
+4. Call `_start` to call `main` (defined in `crt0.S`).
 
 Now the processor is in **Thread Mode** and `MSP` is used.
 
 
-## Phase 2: Start the First Task
+# Phase 2: Start the First Task
 An **SVC exception** is triggered by the `svc 0` instruction in `main.c`.
 
 Upon the entry of the exception, the processor (hardware) will do the following:
@@ -58,7 +66,7 @@ The first instruction of the selected task will be executed next!
 Now the processor is in **Thread Mode** and `PSP` is used.
 
 
-## Phase 3: Automatic Task Switch
+# Phase 3: Automatic Task Switch
 An **SysTick interrupt** is triggered when a certain amount of time has elapsed.
 
 Upon the entry of the interrupt, the processor (hardware) will do the following:
@@ -80,3 +88,15 @@ Upon the return of the interrupt, the processor (hardware) will do the following
 - ... (See *Armv7-M Architecture Reference Manual B1.5.8 Exception return behavior*)
 
 Now the processor is in **Thread Mode** and `PSP` is used.
+
+# Implementation
+The Task Scheduler adopts round robin task switch: Tasks are stored in a linked-list-like Task List and are selected in the order they present in the Task List.
+
+For the moment, two functions are exposed to users:
+- `ts_initialize` for initializing the Task Scheduler
+- `ts_create_task` for adding a new Task to the Task List
+
+# Caveats
+The `tcb` struct (defined in `task_scheduler.h`) has the data structure embedded, there are both pro and con:
+- Pro: A standalone struct for the data structure is not need.
+- Con: If in the future we would like to change the way of storing Tasks, there might be a major modification to the code that involves the `tcb` struct.
