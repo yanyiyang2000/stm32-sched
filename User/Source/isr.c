@@ -44,7 +44,7 @@ void __attribute__ ((naked)) SysTick_Handler() {
     __ASM volatile ("stmdb  r0!, {r4-r11}");        // push r4 - r11 onto process stack and decrement r0
 
     // Save current task's PSP
-    __ASM volatile ("ldr    r1, =tm_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
+    __ASM volatile ("ldr    r1, =ts_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
     __ASM volatile ("ldr    r1, [r1]");             // r1 <- addr(curr_tcb)
     __ASM volatile ("str    r0, [r1]");             // curr_tcb.stack_top <- r0
 
@@ -52,13 +52,13 @@ void __attribute__ ((naked)) SysTick_Handler() {
     __ASM volatile ("stmdb  sp!, {lr}");            // push lr onto main stack and decrement sp
 
     // Select a new task
-    __ASM volatile ("bl     tm_select_task");
+    __ASM volatile ("bl     ts_select_task");
 
     // Restore ISR's LR
     __ASM volatile ("ldmia  sp!, {lr}");            // pop lr from main stack and increment sp
 
     // Restore next task's PSP
-    __ASM volatile ("ldr    r1, =tm_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
+    __ASM volatile ("ldr    r1, =ts_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
     __ASM volatile ("ldr    r1, [r1]");             // r1 <- addr(curr_tcb)
     __ASM volatile ("ldr    r0, [r1]");             // r0 <- curr_tcb.stack_top
     
@@ -96,10 +96,10 @@ void __attribute__ ((naked)) SysTick_Handler() {
  */
 void __attribute__ ((naked)) SVC_Handler() {
     // Select the first task
-    __ASM volatile ("bl     tm_select_task");
+    __ASM volatile ("bl     ts_select_task");
 
     // Set task's PSP
-    __ASM volatile ("ldr    r1, =tm_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
+    __ASM volatile ("ldr    r1, =ts_curr_tcb");     // r1 <- addr(curr_tcb_ptr)
     __ASM volatile ("ldr    r1, [r1]");             // r1 <- addr(curr_tcb)
     __ASM volatile ("ldr    r0, [r1]");             // r0 <- curr_tcb.stack_top
 

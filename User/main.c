@@ -9,7 +9,9 @@
 
 /* User API */
 #include "msi_config.h"
-#include "task_manager.h"
+#include "task_scheduler.h"
+
+/* User Tasks */
 #include "demo_tasks.h"
 
 
@@ -21,13 +23,13 @@ int main() {
     SysTick_Config(SystemCoreClock/1000);
 
     // Initialize Task Manager
-    tm_initialize();
+    ts_initialize();
 
     // Create Tasks
-    tm_create_task(demo_task_1_stack, DEMO_TASK_1_STACK_SIZE, (uint32_t)&demo_task_1_enter);
-    tm_create_task(demo_task_2_stack, DEMO_TASK_2_STACK_SIZE, (uint32_t)&demo_task_2_enter);
+    ts_create_task(demo_task_1_stack, DEMO_TASK_1_STACK_SIZE, (uint32_t)&demo_task_1_enter);
+    ts_create_task(demo_task_2_stack, DEMO_TASK_2_STACK_SIZE, (uint32_t)&demo_task_2_enter);
 
-    // Start Task Manager
+    // Start Task Scheduler
     __ASM volatile ("svc 0");
 
     while (1);

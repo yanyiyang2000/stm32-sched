@@ -5,7 +5,7 @@ add_executable(
     ${CMAKE_CURRENT_LIST_DIR}/Source/crt0.S
     ${CMAKE_CURRENT_LIST_DIR}/Source/isr.c
     ${CMAKE_CURRENT_LIST_DIR}/Source/msi_config.c
-    ${CMAKE_CURRENT_LIST_DIR}/Source/task_manager.c
+    ${CMAKE_CURRENT_LIST_DIR}/Source/task_scheduler.c
     ${CMAKE_CURRENT_LIST_DIR}/Source/demo_tasks.c
     ${CMAKE_CURRENT_LIST_DIR}/main.c
 )
