@@ -13,9 +13,9 @@
 - [Frequently Used GCC Commands](#frequently-used-gcc-commands)
 - [References](#references)
 
+
 # Overview
 This project contains multiple demonstrations for board equpped with ARM Cortex MCU:
-
 | Property             | Value                                    |
 | -------------------- | ---------------------------------------- |
 | Development board    | STM32 Nucleo-64 w/ embedded ST-LINK/v2-1 |
@@ -29,6 +29,7 @@ The project's source code is divided into two major directories:
 - The `CMSIS` directory contains header files and source code provided by [ARM](https://github.com/ARM-software/CMSIS_6/tree/main/CMSIS/Core) and [STMicroelectronics](https://github.com/STMicroelectronics/cmsis_device_l4) that are conforming to [CMSIS 6](https://arm-software.github.io/CMSIS_6/latest/General/index.html). 
 - The `User` directory contains header files and source code for the demonstractions and C runtime startup code (`crt0.S`).
 
+
 # Prerequisites
 Install the following packages (on Debian 12):
 - `gcc-arm-none-eabi`
@@ -38,6 +39,7 @@ Install the following packages (on Debian 12):
 - `cmake`
 - `make`
 - `openocd`
+
 
 # Porting to other Cortex Devices
 Based on the properties of the target device, replace the following files:
@@ -53,11 +55,11 @@ Based on the properties of the target device, replace the following files:
 | `startup_stm32l4xx.c`  | MCU series             | ST     |
 | `system_stm32l4xx.c`   | MCU series             | ST     |
 | `STM32L476.svd`        | MCU                    | ST     |
+[^1]: You may need to modify the linker script using correct FLASH and RAM size.
 
 > [!NOTE]
-> You need to modify the compile definitions, compile options and link options in each `CMakeLists.txt` based on the properties of the target device.
+> You need to modify the compile definitions, compile options and link options in the top-level `CMakeLists.txt` based on the properties of the target device.
 
-[^1]: You may need to modify the linker script using correct FLASH and RAM size.
 
 # Setting Project Name and Executable Name
 In the project root directory, modify the `<PROJECT_NAME>` entry in `CMakeLists.txt`:
@@ -81,33 +83,35 @@ target_include_directories(
 )
 ```
 
+
 # Building
 In the project root directory, use one of the following commands to build the executable:
-- For debug configuration:
 ```bash
 cmake -D CMAKE_BUILD_TYPE=Debug -B build .
 
 cmake -D CMAKE_BUILD_TYPE=Release -B build .
 ```
-
-In the project root directory, use the following command:
+Then use the following command:
 ```bash
 cmake --build ./build
 ```
 
+
 # Flashing
-In the `build` directory, use the following command:
+In the project root directory, use the following command:
 ```bash
-openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program User/<EXE_NAME>.elf verify reset exit"
+openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/User/<EXE_NAME>.elf verify reset exit"
 ```
 > [!NOTE]
 > When porting this project to other device, select appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
 
+
 # Cleaning
-In the `build` directory, use the following command:
+In the project root directory, use the following command:
 ```bash
-rm -rf *
+rm -rf ./build
 ```
+
 
 # Debugging
 The debugging process requires two shell sessions.
@@ -121,15 +125,15 @@ openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "gdb_port 3333"
 > When porting this project to other device, select appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
 
 ## Session 2
-In the `build` directory, open another terminal, use the following command:
+In the project root directory, open another terminal, use the following command:
 ```bash
-gdb-multiarch User/<EXE_NAME>.elf
+gdb-multiarch ./build/User/<EXE_NAME>.elf
 ```
-
 After seeing the prompt from GDB, use the following command:
 ```bash
 target remote localhost:3333
 ```
+
 
 # Frequently Used GDB Commands
 | Command              | Description                            |
@@ -146,6 +150,7 @@ target remote localhost:3333
 | `n`                  | Step over                              |
 | `bt`                 | Print trace of all frames              |
 
+
 # Frequently Used GCC Commands
 | Command                                                    | Description                 |
 | ---------------------------------------------------------- | --------------------------- |
@@ -154,6 +159,7 @@ target remote localhost:3333
 | `arm-none-eabi-objdump -t <EXE_NAME>.elf`                  | View the symbol table       |
 | `arm-none-eabi-readelf -S <EXE_NAME>.elf`                  | View the output info        |
 | `arm-none-eabi-size <EXE_NAME>.elf`                        | View the size of executable |
+
 
 # References
 - [ARMv7-M Architecture Reference Manual (DDI 0403)](https://developer.arm.com/documentation/ddi0403/latest/)
