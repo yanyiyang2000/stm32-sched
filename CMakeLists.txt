@@ -30,6 +30,7 @@ add_compile_options(
     -mthumb
     -mcpu=cortex-m4
     -mfpu=fpv4-sp-d16
+    -mfloat-abi=soft            # use software emulation for floating point operations
     -Wall                       # enable all warnings
     -Wno-missing-attributes     # disable warning about missing attributes
     -ffunction-sections         # place each function in its own named section in the output object file
@@ -37,6 +38,9 @@ add_compile_options(
 )
 
 add_link_options(
+    -mcpu=cortex-m4
+    -mfpu=fpv4-sp-d16
+    -mfloat-abi=soft            # use software emulation for floating point operations
     -nostartfiles               # use custom crt0.S (otherwise newlib's crt0.S will be used)
     --specs=nano.specs          # use libc_nano.a (otherwise libc.a will be used)
     --specs=nosys.specs         # use libnosys.a (provides stub syscalls such as `_exit` used by the custom crt0.S)

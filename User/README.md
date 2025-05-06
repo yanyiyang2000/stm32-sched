@@ -98,5 +98,7 @@ For the moment, two functions are exposed to users:
 
 # Caveats
 The `tcb` struct (defined in `task_scheduler.h`) has the data structure embedded, there are both pro and con:
-- Pro: A standalone struct for the data structure is not need.
+- Pro: A standalone struct for the data structure is not needed.
 - Con: If in the future we would like to change the way of storing Tasks, there might be a major modification to the code that involves the `tcb` struct.
+
+The current context switch does not save the VFP registers used by the FPU, so the program is compiled with the `-mfloat-abi=soft` instead of `-mfloat-abi=hard`.

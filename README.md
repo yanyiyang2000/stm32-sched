@@ -149,7 +149,7 @@ target remote localhost:3333
 # Frequently Used GCC Commands
 | Command                                                    | Description                 |
 | ---------------------------------------------------------- | --------------------------- |
-| `arm-none-eabi-gcc <COMPILER_DEFINES> -E -dM -< /dev/null` | Show predefined macros      |
+| `arm-none-eabi-gcc <COMPILER_OPTIONS> -E -dM -< /dev/null` | Show predefined macros      |
 | `arm-none-eabi-objdump -d <EXE_NAME>.elf`                  | View the assembly code      |
 | `arm-none-eabi-objdump -t <EXE_NAME>.elf`                  | View the symbol table       |
 | `arm-none-eabi-readelf -S <EXE_NAME>.elf`                  | View the output info        |
