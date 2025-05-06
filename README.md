@@ -82,7 +82,7 @@ target_include_directories(
 ```
 
 # Building
-In the project root directory, use one of the following commands to build the firmware:
+In the project root directory, use one of the following commands to build the executable:
 - For debug configuration:
 ```bash
 cmake -D CMAKE_BUILD_TYPE=Debug -B build .
@@ -98,7 +98,7 @@ cmake --build ./build
 # Flashing
 In the `build` directory, use the following command:
 ```bash
-openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program User/firmware.elf verify reset exit"
+openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program User/<EXE_NAME>.elf verify reset exit"
 ```
 > [!NOTE]
 > When porting this project to other device, select appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
@@ -123,7 +123,7 @@ openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "gdb_port 3333"
 ## Session 2
 In the `build` directory, open another terminal, use the following command:
 ```bash
-gdb-multiarch User/firmware.elf
+gdb-multiarch User/<EXE_NAME>.elf
 ```
 
 After seeing the prompt from GDB, use the following command:
@@ -147,13 +147,13 @@ target remote localhost:3333
 | `bt`                 | Print trace of all frames              |
 
 # Frequently Used GCC Commands
-| Command                                           | Description                 |
-| ------------------------------------------------- | --------------------------- |
-| `arm-none-eabi-gcc <DEFINES> -E -dM -< /dev/null` | Show predefined macros      |
-| `arm-none-eabi-objdump -d <ELF_FILE>`             | View the assembly code      |
-| `arm-none-eabi-objdump -t <ELF_FILE>`             | View the symbol table       |
-| `arm-none-eabi-readelf -S <ELF_FILE>`             | View the output info        |
-| `arm-none-eabi-size <ELF_FILE>`                   | View the size of executable |
+| Command                                                    | Description                 |
+| ---------------------------------------------------------- | --------------------------- |
+| `arm-none-eabi-gcc <COMPILER_DEFINES> -E -dM -< /dev/null` | Show predefined macros      |
+| `arm-none-eabi-objdump -d <ELF_FILE>`                      | View the assembly code      |
+| `arm-none-eabi-objdump -t <ELF_FILE>`                      | View the symbol table       |
+| `arm-none-eabi-readelf -S <ELF_FILE>`                      | View the output info        |
+| `arm-none-eabi-size <ELF_FILE>`                            | View the size of executable |
 
 # References
 - [ARMv7-M Architecture Reference Manual (DDI 0403)](https://developer.arm.com/documentation/ddi0403/latest/)
