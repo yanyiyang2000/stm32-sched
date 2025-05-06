@@ -1,5 +1,5 @@
-#ifndef TASK_MANAGER_H
-#define TASK_MANAGER_H
+#ifndef TASK_SCHEDULER_H
+#define TASK_SCHEDULER_H
 
 /* Standard library API */
 #include <stdint.h>
@@ -49,4 +49,4 @@ uint8_t ts_create_task(uint32_t *task_stack, uint32_t task_stack_size, uint32_t 
  */
 void ts_select_task();
 
-#endif /* TASK_MANAGER_H */
+#endif /* TASK_SCHEDULER_H */

@@ -30,7 +30,7 @@ The project's source code is divided into two major directories:
 - The `User` directory contains header files and source code for the demonstractions and C runtime startup code (`crt0.S`).
 
 # Prerequisites
-Install the following packages:
+Install the following packages (on Debian 12):
 - `gcc-arm-none-eabi`
 - `binutils-arm-none-eabi`
 - `libnewlib-arm-none-eabi`
@@ -59,7 +59,7 @@ Based on the properties of the target device, replace the following files:
 
 [^1]: You may need to modify the linker script using correct FLASH and RAM size.
 
-# Setting Project and Executable Name
+# Setting Project Name and Executable Name
 In the project root directory, modify the `<PROJECT_NAME>` entry in `CMakeLists.txt`:
 ```cmake
 project(

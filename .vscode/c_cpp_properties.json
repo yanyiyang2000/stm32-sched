@@ -8,8 +8,7 @@
             ],
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/lib/arm-none-eabi/include/**",
-                "/usr/lib/gcc/arm-none-eabi/10.3.1/include/"
+                "/usr/include/newlib/**"
             ],
             "defines": [
                 "STM32L476xx"
