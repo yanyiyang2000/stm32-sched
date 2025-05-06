@@ -9,8 +9,8 @@
 - [Debugging](#debugging)
     - [Session 1](#session-1)
     - [Session 2](#session-2)
-    - [Frequently Used GDB Commands](#frequently-used-gdb-commands)
-- [Tools](#tools)
+- [Frequently Used GDB Commands](#frequently-used-gdb-commands)
+- [Frequently Used GCC Commands](#frequently-used-gcc-commands)
 - [References](#references)
 
 # Overview
