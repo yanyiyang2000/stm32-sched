@@ -41,8 +41,7 @@ Install the following packages:
 
 # Porting to other Cortex Devices
 Based on the properties of the target device, replace the following files:
-
-| File                   | Property               | Source |
+| File                   | Depends on             | Source |
 | ---------------------- | ---------------------- | ------ |
 | `core_cm4.h`           | MCU CPU core           | ARM    |
 | `armv7m_mpu.h`         | MCU CPU architecture   | ARM    |
@@ -60,12 +59,25 @@ Based on the properties of the target device, replace the following files:
 
 [^1]: You may need to modify the linker script using correct FLASH and RAM size.
 
-# Setting Project Name
+# Setting Project and Executable Name
 In the project root directory, modify the `<PROJECT_NAME>` entry in `CMakeLists.txt`:
 ```cmake
 project(
     <PROJECT_NAME>
     LANGUAGES C ASM
+)
+```
+
+In the `User` directory, modify the `<EXE_NAME>` entry in `CMakeLists.txt`:
+```cmake
+add_executable(
+    <EXE_NAME>
+    ...
+)
+
+target_include_directories(
+    <EXE_NAME>
+    ...
 )
 ```
 
@@ -119,7 +131,7 @@ After seeing the prompt from GDB, use the following command:
 target remote localhost:3333
 ```
 
-## Frequently Used GDB Commands
+# Frequently Used GDB Commands
 | Command              | Description                            |
 | -------------------- | -------------------------------------- |
 | `monitor reset halt` | Reset and halt                         |
@@ -142,31 +154,6 @@ target remote localhost:3333
 | `arm-none-eabi-objdump -t <ELF_FILE>`             | View the symbol table       |
 | `arm-none-eabi-readelf -S <ELF_FILE>`             | View the output info        |
 | `arm-none-eabi-size <ELF_FILE>`                   | View the size of executable |
-
-Use the following command to shows all the predefined macros
-```bash
-arm-none-eabi-gcc -mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -E -dM -< /dev/null | sort
-```
-
-In the `build` directory, use the following command to view the dieassembly code:
-```bash
-arm-none-eabi-objdump -d User/firmware.elf
-```
-
-In the `build` directory, use the following command to view the symbol table:
-```bash
-arm-none-eabi-objdump -t User/firmware.elf | sort
-```
-
-In the `build` directory, use the following command to view the output information:
-```bash
-arm-none-eabi-readelf -S User/firmware.elf
-```
-
-In the `build` directory, use the following command to view the size of the executable:
-```bash
-arm-none-eabi-size User/firmware.elf
-```
 
 # References
 - [ARMv7-M Architecture Reference Manual (DDI 0403)](https://developer.arm.com/documentation/ddi0403/latest/)
