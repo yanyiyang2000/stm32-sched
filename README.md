@@ -51,7 +51,7 @@ Based on the properties of the target device, replace the following files:
 | `stm32l4xx_gcc.ld`[^1] | Toolchain & MCU series | ST     |
 | `stm32l476xx.h`        | MCU                    | ST     |
 | `stm32l4xx.h`          | MCU series             | ST     |
-| `startup_stm32l4xx.c`  | MCU series & Toolchain | ST     |
+| `startup_stm32l4xx.c`  | MCU series             | ST     |
 | `system_stm32l4xx.c`   | MCU series             | ST     |
 | `STM32L476.svd`        | MCU                    | ST     |
 
@@ -74,9 +74,7 @@ In the project root directory, use one of the following commands to build the fi
 - For debug configuration:
 ```bash
 cmake -D CMAKE_BUILD_TYPE=Debug -B build .
-```
-- For release configuration:
-```bash
+
 cmake -D CMAKE_BUILD_TYPE=Release -B build .
 ```
 
@@ -136,7 +134,15 @@ target remote localhost:3333
 | `n`                  | Step over                              |
 | `bt`                 | Print trace of all frames              |
 
-# Tools
+# Frequently Used GCC Commands
+| Command                                           | Description                 |
+| ------------------------------------------------- | --------------------------- |
+| `arm-none-eabi-gcc <DEFINES> -E -dM -< /dev/null` | Show predefined macros      |
+| `arm-none-eabi-objdump -d <ELF_FILE>`             | View the assembly code      |
+| `arm-none-eabi-objdump -t <ELF_FILE>`             | View the symbol table       |
+| `arm-none-eabi-readelf -S <ELF_FILE>`             | View the output info        |
+| `arm-none-eabi-size <ELF_FILE>`                   | View the size of executable |
+
 Use the following command to shows all the predefined macros
 ```bash
 arm-none-eabi-gcc -mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -E -dM -< /dev/null | sort
