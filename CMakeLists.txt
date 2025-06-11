@@ -14,13 +14,13 @@ set(CMAKE_C_COMPILER   "/usr/bin/arm-none-eabi-gcc")
 set(CMAKE_EXECUTABLE_SUFFIX_ASM .elf)
 set(CMAKE_EXECUTABLE_SUFFIX_C   .elf)
 
+set(CMAKE_C_FLAGS_DEBUG   "-O0 -g3")
+set(CMAKE_C_FLAGS_RELEASE "-O3")
+
 project(
     stm32-sched
     LANGUAGES C ASM
 )
-
-set(CMAKE_C_FLAGS_DEBUG "-O0 -g3")
-set(CMAKE_C_FLAGS_RELEASE "-O3")
 
 add_compile_definitions(
     STM32L476xx
@@ -48,10 +48,7 @@ add_link_options(
     -Wl,--trace                 # print name of input files (use --verbose for more detailed information)
     -Wl,--print-memory-usage    # print memory usage
     # -Wl,--print-map           # print memory map
-    # -T "${PROJECT_SOURCE_DIR}/CMSIS/Device/ST/STM32L4xx/Config/stm32l4xx_gcc.ld"
-    -T "${PROJECT_SOURCE_DIR}/User/Config/stm32l4xx_gcc.ld"
+    -T "${PROJECT_SOURCE_DIR}/CMSIS/Device/ST/STM32L4xx/Config/stm32l4xx_gcc.ld"
 )
 
-add_subdirectory(
-    ${PROJECT_SOURCE_DIR}/User
-)
+add_subdirectory(${PROJECT_SOURCE_DIR}/User)

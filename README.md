@@ -25,8 +25,8 @@ This project contains multiple demonstrations for board equpped with ARM Cortex 
 | MCU CPU architecture | ARMv7E-M                                 |
 | Toolchain            | gcc                                      |
 
-The project's source code is divided into two major directories: 
-- The `CMSIS` directory contains header files and source code provided by [ARM](https://github.com/ARM-software/CMSIS_6/tree/main/CMSIS/Core) and [STMicroelectronics](https://github.com/STMicroelectronics/cmsis_device_l4) that are conforming to [CMSIS 6](https://arm-software.github.io/CMSIS_6/latest/General/index.html). 
+The project's source code is divided into two major directories:
+- The `CMSIS` directory contains header files and source code provided by [ARM](https://github.com/ARM-software/CMSIS_6/tree/main/CMSIS/Core) and [STMicroelectronics](https://github.com/STMicroelectronics/cmsis_device_l4) that are conforming to [CMSIS 6](https://arm-software.github.io/CMSIS_6/latest/General/index.html).
 - The `User` directory contains header files and source code for the demonstractions and C runtime startup code (`crt0.S`).
 
 
@@ -85,13 +85,13 @@ target_include_directories(
 
 
 # Building
-In the project root directory, use one of the following commands to build the executable:
+In the project root directory, use one of the following commands to configure build type:
 ```bash
 cmake -D CMAKE_BUILD_TYPE=Debug -B build .
 
 cmake -D CMAKE_BUILD_TYPE=Release -B build .
 ```
-Then use the following command:
+In the project root directory, use the following commands to build:
 ```bash
 cmake --build ./build
 ```
@@ -103,7 +103,7 @@ In the project root directory, use the following command:
 openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/User/<EXE_NAME>.elf verify reset exit"
 ```
 > [!NOTE]
-> When porting this project to other device, select appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
+> When porting this project to other devices, select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
 
 
 # Cleaning
@@ -122,7 +122,7 @@ In any directory, use the following command:
 openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "gdb_port 3333"
 ```
 > [!NOTE]
-> When porting this project to other device, select appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
+> When porting this project to other devices, select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
 
 ## Session 2
 In the project root directory, open another terminal, use the following command:

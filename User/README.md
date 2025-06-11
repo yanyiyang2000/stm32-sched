@@ -5,8 +5,10 @@
 - [Phase 2: Start the First Task](#phase-2-start-the-first-task)
 - [Phase 3: Automatic Task Switch](#phase-3-automatic-task-switch)
 
+
 # Introduction
 This is a demonstration of a custom Task Scheduler running on an ARMv7-M processor (Cortex-M4). It is assumed that the FPU of the processor is not enabled for the simplicity.
+
 
 # Registers of Interest
 - `R0` - `R12`
@@ -17,6 +19,7 @@ This is a demonstration of a custom Task Scheduler running on an ARMv7-M process
 - `R15` (a.k.a. `PC`)
 - `xPSR`
 - `CONTROL`
+
 
 # Phase 1: Power On and Reset
 A **Reset exception** is triggered when the processor is powered on. 
@@ -89,12 +92,14 @@ Upon the return of the interrupt, the processor (hardware) will do the following
 
 Now the processor is in **Thread Mode** and `PSP` is used.
 
+
 # Implementation
 The Task Scheduler adopts round robin task switch: Tasks are stored in a linked-list-like Task List and are selected in the order they present in the Task List.
 
 For the moment, two functions are exposed to users:
 - `ts_initialize` for initializing the Task Scheduler
 - `ts_create_task` for adding a new Task to the Task List
+
 
 # Caveats
 The `tcb` struct (defined in `task_scheduler.h`) has the data structure embedded, there are both pro and con:
