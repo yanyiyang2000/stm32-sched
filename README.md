@@ -15,7 +15,9 @@
 
 
 # Overview
-This project contains multiple demonstrations for board equpped with ARM Cortex MCU:
+This project contains a task scheduler targeting ARMv7E-M devices.
+
+The followings are the hardware, toolchain and build system used by the project.
 | Property             | Value                                    |
 | -------------------- | ---------------------------------------- |
 | Development board    | STM32 Nucleo-64 w/ embedded ST-LINK/v2-1 |
@@ -24,6 +26,7 @@ This project contains multiple demonstrations for board equpped with ARM Cortex 
 | MCU CPU core         | ARM Cortex-M4                            |
 | MCU CPU architecture | ARMv7E-M                                 |
 | Toolchain            | gcc                                      |
+| Build system         | cmake                                    |
 
 The project's source code is divided into two major directories:
 - The `CMSIS` directory contains header files and source code provided by [ARM](https://github.com/ARM-software/CMSIS_6/tree/main/CMSIS/Core) and [STMicroelectronics](https://github.com/STMicroelectronics/cmsis_device_l4) that are conforming to [CMSIS 6](https://arm-software.github.io/CMSIS_6/latest/General/index.html).
