@@ -61,7 +61,7 @@ Based on the properties of the target device, replace the following files:
 [^1]: You may need to modify the linker script using correct FLASH and RAM size.
 
 > [!NOTE]
-> You need to modify the compile definitions, compile options and link options in the top-level `CMakeLists.txt` based on the properties of the target device.
+> Modify the compile definitions, compile options and link options in the top-level `CMakeLists.txt` based on the properties of the target device.
 
 
 # Setting Project Name and Executable Name
@@ -99,7 +99,7 @@ In the project root directory, use the following command:
 openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/User/<EXE_NAME>.elf verify reset exit"
 ```
 > [!NOTE]
-> When porting this project to other devices, select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
+> Select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg` when porting this project to other devices.
 
 
 # Cleaning
@@ -113,15 +113,15 @@ rm -rf ./build
 The debugging process requires two shell sessions.
 
 ## Session 1
-In any directory, use the following command:
+In any directory, create a shell session and use the following command:
 ```shell
 openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "gdb_port 3333"
 ```
 > [!NOTE]
-> When porting this project to other devices, select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg`.
+> Select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg` when porting this project to other devices.
 
 ## Session 2
-In the project root directory, open another terminal, use the following command:
+In the project root directory, create another shell session and use the following command:
 ```shell
 gdb-multiarch ./build/User/<EXE_NAME>.elf
 ```
