@@ -88,21 +88,14 @@ target_include_directories(
 
 
 # Building
-In the project root directory, use one of the following commands to configure build type:
-```bash
-cmake -D CMAKE_BUILD_TYPE=Debug -B build .
-
-cmake -D CMAKE_BUILD_TYPE=Release -B build .
-```
-In the project root directory, use the following commands to build:
-```bash
-cmake --build ./build
-```
+In the project root directory, run the `build.sh` script to build the firmware.
+> [!NOTE]
+> Modify the `BUILD_TYPE` variable in the script for debug or release build. The default build type is `Debug`.
 
 
 # Flashing
 In the project root directory, use the following command:
-```bash
+```shell
 openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/User/<EXE_NAME>.elf verify reset exit"
 ```
 > [!NOTE]
@@ -111,7 +104,7 @@ openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/User/
 
 # Cleaning
 In the project root directory, use the following command:
-```bash
+```shell
 rm -rf ./build
 ```
 
@@ -121,7 +114,7 @@ The debugging process requires two shell sessions.
 
 ## Session 1
 In any directory, use the following command:
-```bash
+```shell
 openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "gdb_port 3333"
 ```
 > [!NOTE]
@@ -129,11 +122,11 @@ openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "gdb_port 3333"
 
 ## Session 2
 In the project root directory, open another terminal, use the following command:
-```bash
+```shell
 gdb-multiarch ./build/User/<EXE_NAME>.elf
 ```
 After seeing the prompt from GDB, use the following command:
-```bash
+```shell
 target remote localhost:3333
 ```
 
