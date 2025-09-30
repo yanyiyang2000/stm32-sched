@@ -76,21 +76,18 @@ MEMORY
  *   __zero_table_start__
  *   __zero_table_end__
  *   __data_start__
+ *   __data_end__
  *   __preinit_array_start
  *   __preinit_array_end
  *   __init_array_start
  *   __init_array_end
  *   __fini_array_start
  *   __fini_array_end
- *   __data_end__
  *   __bss_start__
  *   __bss_end__
- *   __end__
- *   end
  *   __HeapLimit
  *   __StackLimit
  *   __StackTop
- *   __stack
  */
 
 ENTRY(Reset_Handler)
@@ -207,8 +204,6 @@ SECTIONS
   .heap (NOLOAD) :
   {
     . = ALIGN(8);
-    __end__ = .;
-    PROVIDE(end = .);
     . = . + __HEAP_SIZE;
     . = ALIGN(8);
     __HeapLimit = .;
@@ -222,7 +217,6 @@ SECTIONS
     . = ALIGN(8);
     __StackTop = .;
   } > RAM
-  PROVIDE(__stack = __StackTop);
 
   /* Check if data + heap + stack exceeds RAM limit */
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")

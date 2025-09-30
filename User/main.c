@@ -22,7 +22,7 @@ int main() {
     // Configure SysTick to 1 kHz
     SysTick_Config(SystemCoreClock/1000);
 
-    // Initialize Task Manager
+    // Initialize Task Scheduler
     ts_initialize();
 
     // Create Tasks
