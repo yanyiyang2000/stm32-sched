@@ -52,7 +52,7 @@ void __attribute__ ((naked)) SysTick_Handler() {
     __ASM volatile ("stmdb  sp!, {lr}");            // push lr onto main stack and decrement sp
 
     // Select a new task
-    __ASM volatile ("bl     ts_select_task");
+    __ASM volatile ("bl     ts_select_task");       // push and pop the return address of ts_select_task onto and from lr
 
     // Restore ISR's LR
     __ASM volatile ("ldmia  sp!, {lr}");            // pop lr from main stack and increment sp
@@ -67,7 +67,7 @@ void __attribute__ ((naked)) SysTick_Handler() {
     __ASM volatile ("msr    psp, r0");              // psp <- r0
 
     // Return
-    __ASM volatile ("bx     lr");
+    __ASM volatile ("bx     lr");                   // branch to the address stored in lr
 }
 
 /**
@@ -96,7 +96,7 @@ void __attribute__ ((naked)) SysTick_Handler() {
  */
 void __attribute__ ((naked)) SVC_Handler() {
     // Select the first task
-    __ASM volatile ("bl     ts_select_task");
+    __ASM volatile ("bl     ts_select_task");       // push and pop the return address of ts_select_task onto and from lr
 
     // Set task's PSP
     __ASM volatile ("ldr    r1, =ts_curr_tcb");     // r1 <- addr(curr_tcb_ptr)

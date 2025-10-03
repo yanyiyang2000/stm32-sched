@@ -28,18 +28,18 @@ extern struct tcb *ts_curr_tcb;
 
 /**
  * @brief This function initializes a Task List.
- * 
+ *
  * @note The Task List is a circular doubly linked list of TCB Nodes.
  */
 void ts_initialize();
 
 /**
  * @brief This function creates a new Task and prepends it to the Task List.
- * 
- * @param task_stack      The pointer to the first word of the Task Stack
+ *
+ * @param task_stack      The pointer to the last word of the Task Stack (the lowest address of the Task Stack)
  * @param task_stack_size The size of the Task Stack in words (4 bytes)
  * @param task            The starting address of the Task Routine
- * 
+ *
  * @return `TS_STATUS_SUCCESS` if succeeds and `TS_STATUS_FAILURE` otherwise.
  */
 uint8_t ts_create_task(uint32_t *task_stack, uint32_t task_stack_size, uint32_t task);

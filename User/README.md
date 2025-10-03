@@ -22,7 +22,7 @@ This is a demonstration of a custom Task Scheduler running on an ARMv7-M process
 
 
 # Phase 1: Power On and Reset
-A **Reset exception** is triggered when the processor is powered on. 
+A **Reset exception** is triggered when the processor is powered on.
 
 Upon the entry of the exception, the processor (hardware) will do the following:
 1. Set mode to **Thread Mode**.
@@ -33,10 +33,10 @@ Upon the entry of the exception, the processor (hardware) will do the following:
 6. Branch to **Reset Handler**.
 
 The **Reset Handler** (software, defined in `startup_stm32l4xx.c`) will then do the following:
-1. Set `PSP` to the top of the `.stack` section (defined in the linker script). 
-2. Call `SystemInit` to remap vector table and set up FPU  (defined in `system_stm32l4xx.c`).
-3. Call `cmsis_start` to initialize `.bss` and `.data` section in RAM (defined in `cmsis_gcc_m.h`).
-4. Call `_start` to call `main` (defined in `crt0.S`).
+1. Set `PSP` to the top of the `.stack` section (defined in `stm32l4xx_gcc.ld`).
+2. Call `SystemInit` (defined in `system_stm32l4xx.c`) to remap vector table and set up FPU.
+3. Call `cmsis_start` (defined in `cmsis_gcc_m.h`) to initialize `.bss` and `.data` sections in RAM.
+4. Call `_start` (defined in `crt0.S`) to call `main`.
 
 Now the processor is in **Thread Mode** and `MSP` is used.
 

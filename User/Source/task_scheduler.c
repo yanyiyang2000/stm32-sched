@@ -29,10 +29,10 @@ void ts_initialize() {
 
 uint8_t ts_create_task(uint32_t *task_stack, uint32_t task_stack_size, uint32_t task) {
     /**
-     * TODO: 
+     * TODO:
      * 1. It's kinda misleading why `task` is a u32 instead a func ptr.
      * 2. The actual available task stack is (task_stack_size - TS_NUM_REGS) words.
-     * 3. This function is not idiot-proof if user provides a smaller task stack. (how to become idiot-proof?)
+     * 3. This function is not idiot-proof if user provides a smaller task stack. (how to become idiot-proof at compile time?)
      */
 
     struct tcb *new_tcb; // The pointer to the new TCB Node

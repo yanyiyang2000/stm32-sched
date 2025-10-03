@@ -126,12 +126,14 @@ SECTIONS
     *(.ARM.extab* .gnu.linkonce.armextab.*)
   } > FLASH
 
-  __exidx_start = .;
   .ARM.exidx :
   {
+    __exidx_start = .;
+
     *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+
+    __exidx_end = .;
   } > FLASH
-  __exidx_end = .;
 
   .copy.table :
   {
@@ -159,6 +161,7 @@ SECTIONS
   .data : ALIGN(4)
   {
     __data_start__ = .;
+
     *(vtable)
     *(.data)
     *(.data.*)
@@ -185,7 +188,7 @@ SECTIONS
 
     KEEP(*(.jcr*))
     . = ALIGN(4);
-    /* All data end */
+
     __data_end__ = .;
 
   } > RAM AT > FLASH
@@ -194,10 +197,12 @@ SECTIONS
   {
     . = ALIGN(4);
     __bss_start__ = .;
+
     *(.bss)
     *(.bss.*)
     *(COMMON)
     . = ALIGN(4);
+
     __bss_end__ = .;
   } > RAM AT > RAM
 
@@ -206,6 +211,7 @@ SECTIONS
     . = ALIGN(8);
     . = . + __HEAP_SIZE;
     . = ALIGN(8);
+
     __HeapLimit = .;
   } > RAM
 
@@ -213,8 +219,10 @@ SECTIONS
   {
     . = ALIGN(8);
     __StackLimit = .;
+
     . = . + __STACK_SIZE;
     . = ALIGN(8);
+
     __StackTop = .;
   } > RAM
 
