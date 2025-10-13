@@ -85,6 +85,7 @@ MEMORY
  *   __fini_array_end
  *   __bss_start__
  *   __bss_end__
+ *   __HeapBottom
  *   __HeapLimit
  *   __StackLimit
  *   __StackTop
@@ -129,38 +130,30 @@ SECTIONS
   .ARM.exidx :
   {
     __exidx_start = .;
-
     *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-
     __exidx_end = .;
   } > FLASH
 
   .copy.table :
   {
-    . = ALIGN(4);
-    __copy_table_start__ = .;
-
+    __copy_table_start__ = ALIGN(4);
     LONG (LOADADDR(.data))
     LONG (ADDR(.data))
     LONG (SIZEOF(.data) / 4)
-
     __copy_table_end__ = .;
   } > FLASH
 
   .zero.table :
   {
-    . = ALIGN(4);
-    __zero_table_start__ = .;
-
+    __zero_table_start__ = ALIGN(4);
     LONG (ADDR(.bss))
     LONG (SIZEOF(.bss) / 4)
-
     __zero_table_end__ = .;
   } > FLASH
 
-  .data : ALIGN(4)
+  .data :
   {
-    __data_start__ = .;
+    __data_start__ = ALIGN(4);
 
     *(vtable)
     *(.data)
@@ -187,45 +180,34 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
 
     KEEP(*(.jcr*))
-    . = ALIGN(4);
 
-    __data_end__ = .;
+    __data_end__ = ALIGN(4);
 
   } > RAM AT > FLASH
 
   .bss :
   {
-    . = ALIGN(4);
-    __bss_start__ = .;
-
+    __bss_start__ = ALIGN(4);
     *(.bss)
     *(.bss.*)
     *(COMMON)
-    . = ALIGN(4);
-
-    __bss_end__ = .;
-  } > RAM AT > RAM
-
-  .heap (NOLOAD) :
-  {
-    . = ALIGN(8);
-    . = . + __HEAP_SIZE;
-    . = ALIGN(8);
-
-    __HeapLimit = .;
+    __bss_end__ = ALIGN(4);
   } > RAM
 
-  .stack (NOLOAD) :
+  .heap ALIGN(8) (NOLOAD) :
   {
-    . = ALIGN(8);
-    __StackLimit = .;
+    __HeapBottom = ALIGN(8);
+    . = . + __HEAP_SIZE;
+    __HeapLimit = ALIGN(8);
+  } > RAM
 
+  .stack ALIGN(8) (NOLOAD) :
+  {
+    __StackLimit = ALIGN(8);
     . = . + __STACK_SIZE;
-    . = ALIGN(8);
-
-    __StackTop = .;
+    __StackTop = ALIGN(8);
   } > RAM
 
   /* Check if data + heap + stack exceeds RAM limit */
-  ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
+  ASSERT(__StackLimit >= __HeapLimit, "heap overflowed with stack")
 }

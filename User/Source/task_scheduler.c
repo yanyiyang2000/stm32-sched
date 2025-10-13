@@ -35,7 +35,7 @@ uint8_t ts_create_task(uint32_t *task_stack, uint32_t task_stack_size, uint32_t 
      * 3. This function is not idiot-proof if user provides a smaller task stack. (how to become idiot-proof at compile time?)
      */
 
-    struct tcb *new_tcb; // The pointer to the new TCB Node
+    struct tcb *new_tcb; // The pointer to the a new TCB Node
 
     /* Initialize the Task Stack */
     task_stack[task_stack_size - 2] = task;         // PC
@@ -63,7 +63,7 @@ void ts_select_task() {
     /* Select the next TCB Node */
     ts_curr_tcb = ts_curr_tcb->next_tcb;
 
-    /* Skip the sentinel TCB Node once */
+    /* Skip the Sentinel TCB Node once */
     if (ts_curr_tcb == &ts_sentinel_tcb) {
         ts_curr_tcb = ts_curr_tcb->next_tcb;
     }

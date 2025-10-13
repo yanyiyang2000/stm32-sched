@@ -26,14 +26,14 @@ A **Reset exception** is triggered when the processor is powered on.
 
 Upon the entry of the exception, the processor (hardware) will do the following:
 1. Set mode to **Thread Mode**.
-2. Set `MSP` to the first value in the **Vector Table** and align it *downward* to the nearest 8-byte boudary.
+2. Set `MSP` to the first value in the **Vector Table** (which is the address pointed to by linker symbol `__StackTop` defined in `stm32l4xx_gcc.ld`, see `startup_stm32l4xx.c`) and align it *downward* to the nearest 8-byte boudary.
 3. Set `PSP` to an unknown value and align it *downward* to the nearest 8-byte boudary.
 4. Use `MSP` as `SP` (i.e., the `SPSEL` bit of `CONTROL` is 0 by default).
 5. ... (See *Armv7-M Architecture Reference Manual B1.5.5 Reset behavior*)
 6. Branch to **Reset Handler**.
 
 The **Reset Handler** (software, defined in `startup_stm32l4xx.c`) will then do the following:
-1. Set `PSP` to the top of the `.stack` section (defined in `stm32l4xx_gcc.ld`).
+1. Set `PSP` to the address pointed to by linker symbol `__StackTop` (defined in `stm32l4xx_gcc.ld`).
 2. Call `SystemInit` (defined in `system_stm32l4xx.c`) to remap vector table and set up FPU.
 3. Call `cmsis_start` (defined in `cmsis_gcc_m.h`) to initialize `.bss` and `.data` sections in RAM.
 4. Call `_start` (defined in `crt0.S`) to call `main`.

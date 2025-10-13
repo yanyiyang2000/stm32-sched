@@ -12,7 +12,7 @@
 /**
  * Upon the entry of SysTick interrupt, the processor (hardware) will do the following:
  *
- * 1. Push `R0`-`R3`, `R12`, `SP`, `LR`, `PC` and `xPSR` to the main stack
+ * 1. Push `R0`-`R3`, `R12`, `SP`, `LR`, `PC` and `xPSR` to the process stack
  *    (pointed to by `PSP`) because it is used as `SP` prior to the interrupt.
  *
  * 2. Enter Handler Mode and use `MSP` as `SP`.
@@ -37,6 +37,11 @@
  *   `EXC_RETURN` (`0xFFFFFFFD` in our case). Hence `LR` needs to be pushed onto
  *   the stack and poped from the stack, before and after the `select_next_task`
  *   function call, respectively.
+ *
+ * @todo:
+ * - Instead of pushing and poping LR onto and from main stack before and after the
+ *   ts_select_task function call, can we just load LR with 0xFFFFFFFD before the
+ *   `bx lr` at the end?
  */
 void __attribute__ ((naked)) SysTick_Handler() {
     // Save current task's R4-R11
@@ -52,7 +57,7 @@ void __attribute__ ((naked)) SysTick_Handler() {
     __ASM volatile ("stmdb  sp!, {lr}");            // push lr onto main stack and decrement sp
 
     // Select a new task
-    __ASM volatile ("bl     ts_select_task");       // push and pop the return address of ts_select_task onto and from lr
+    __ASM volatile ("bl     ts_select_task");       // lr is used to store the return address of ts_select_task, i.e., the address of next line
 
     // Restore ISR's LR
     __ASM volatile ("ldmia  sp!, {lr}");            // pop lr from main stack and increment sp
@@ -96,7 +101,7 @@ void __attribute__ ((naked)) SysTick_Handler() {
  */
 void __attribute__ ((naked)) SVC_Handler() {
     // Select the first task
-    __ASM volatile ("bl     ts_select_task");       // push and pop the return address of ts_select_task onto and from lr
+    __ASM volatile ("bl     ts_select_task");       // lr is used to store the return address of ts_select_task, i.e., the address of next line
 
     // Set task's PSP
     __ASM volatile ("ldr    r1, =ts_curr_tcb");     // r1 <- addr(curr_tcb_ptr)

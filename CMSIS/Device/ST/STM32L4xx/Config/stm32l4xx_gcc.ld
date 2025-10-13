@@ -124,6 +124,18 @@ SECTIONS
     KEEP(*(.eh_frame*))
   } > FLASH
 
+  /*
+   * SG veneers:
+   * All SG veneers are placed in the special output section .gnu.sgstubs. Its start address
+   * must be set, either with the command line option '--section-start' or in a linker script,
+   * to indicate where to place these veneers in memory.
+   */
+/*
+  .gnu.sgstubs :
+  {
+    . = ALIGN(32);
+  } > FLASH
+*/
   .ARM.extab :
   {
     *(.ARM.extab* .gnu.linkonce.armextab.*)
@@ -145,6 +157,12 @@ SECTIONS
     LONG (ADDR(.data))
     LONG (SIZEOF(.data) / 4)
 
+    /* Add each additional data section here */
+/*
+    LONG (LOADADDR(.data2))
+    LONG (ADDR(.data2))
+    LONG (SIZEOF(.data2) / 4)
+*/
     __copy_table_end__ = .;
   } > FLASH
 
@@ -153,11 +171,24 @@ SECTIONS
     . = ALIGN(4);
     __zero_table_start__ = .;
 
+/*  .bss initialization to zero is already done during C Run-Time Startup.
     LONG (ADDR(.bss))
     LONG (SIZEOF(.bss) / 4)
+*/
 
+    /* Add each additional bss section here */
+/*
+    LONG (ADDR(.bss2))
+    LONG (SIZEOF(.bss2) / 4)
+*/
     __zero_table_end__ = .;
   } > FLASH
+
+  /*
+   * This __etext variable is kept for backward compatibility with older,
+   * ASM based startup files.
+   */
+  PROVIDE(__etext = LOADADDR(.data));
 
   .data : ALIGN(4)
   {
@@ -193,6 +224,26 @@ SECTIONS
 
   } > RAM AT > FLASH
 
+  /*
+   * Secondary data section, optional
+   *
+   * Remember to add each additional data section
+   * to the .copy.table above to assure proper
+   * initialization during startup.
+   */
+/*
+  .data2 : ALIGN(4)
+  {
+    . = ALIGN(4);
+    __data2_start__ = .;
+    *(.data2)
+    *(.data2.*)
+    . = ALIGN(4);
+    __data2_end__ = .;
+
+  } > RAM2 AT > FLASH
+*/
+
   .bss :
   {
     . = ALIGN(4);
@@ -204,6 +255,25 @@ SECTIONS
     __bss_end__ = .;
   } > RAM AT > RAM
 
+  /*
+   * Secondary bss section, optional
+   *
+   * Remember to add each additional bss section
+   * to the .zero.table above to assure proper
+   * initialization during startup.
+   */
+/*
+  .bss2 :
+  {
+    . = ALIGN(4);
+    __bss2_start__ = .;
+    *(.bss2)
+    *(.bss2.*)
+    . = ALIGN(4);
+    __bss2_end__ = .;
+  } > RAM2 AT > RAM2
+*/
+
   .heap (NOLOAD) :
   {
     . = ALIGN(8);
@@ -214,7 +284,7 @@ SECTIONS
     __HeapLimit = .;
   } > RAM
 
-  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE) (NOLOAD) :
+  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE - __STACKSEAL_SIZE) (NOLOAD) :
   {
     . = ALIGN(8);
     __StackLimit = .;
@@ -223,6 +293,19 @@ SECTIONS
     __StackTop = .;
   } > RAM
   PROVIDE(__stack = __StackTop);
+
+  /* ARMv8-M stack sealing:
+     to use ARMv8-M stack sealing uncomment '.stackseal' section
+   */
+/*
+  .stackseal (ORIGIN(RAM) + LENGTH(RAM) - __STACKSEAL_SIZE) (NOLOAD) :
+  {
+    . = ALIGN(8);
+    __StackSeal = .;
+    . = . + 8;
+    . = ALIGN(8);
+  } > RAM
+*/
 
   /* Check if data + heap + stack exceeds RAM limit */
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
