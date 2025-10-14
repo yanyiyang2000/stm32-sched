@@ -1,7 +1,7 @@
 # Table of Contents
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-- [Porting to other Cortex Devices](#porting-to-other-cortex-devices)
+- [Porting to Other Cortex Devices](#porting-to-other-cortex-devices)
 - [Setting Project Name](#setting-project-name)
 - [Building](#building)
 - [Flashing](#flashing)
@@ -15,7 +15,7 @@
 
 
 # Overview
-This project contains a task scheduler targeting ARMv7E-M devices.
+This project contains a task scheduler targeting Armv7-M devices.
 
 The followings are the hardware, toolchain and build system used by the project.
 | Property             | Value                                    |
@@ -23,8 +23,8 @@ The followings are the hardware, toolchain and build system used by the project.
 | Development board    | STM32 Nucleo-64 w/ embedded ST-LINK/v2-1 |
 | MCU                  | STM32L476RG                              |
 | MCU series           | STM32L4                                  |
-| MCU CPU core         | ARM Cortex-M4                            |
-| MCU CPU architecture | ARMv7E-M                                 |
+| MCU CPU core         | Arm Cortex-M4                            |
+| MCU CPU architecture | Armv7E-M                                 |
 | Toolchain            | gcc                                      |
 | Build system         | cmake                                    |
 
@@ -44,7 +44,7 @@ Install the following packages (on Debian 12):
 - `openocd`
 
 
-# Porting to other Cortex Devices
+# Porting to other Armv7-M Devices
 Based on the properties of the target device, replace the following files:
 | File                   | Depends on             | Source |
 | ---------------------- | ---------------------- | ------ |
