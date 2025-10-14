@@ -1,5 +1,5 @@
-#ifndef CLOCK_CONFIG_H
-#define CLOCK_CONFIG_H
+#ifndef MSI_CONFIG_H
+#define MSI_CONFIG_H
 
 /**
  * This function does the following:
@@ -24,9 +24,9 @@
  *
  * Note: The function may fail setting the MSI clock range to around 48 MHz
  * silently.
- * 
+ *
  * Reference: RM0351, p.100; p.213; p.225
  */
 void MSI_config();
 
-#endif /* CLOCK_CONFIG_H */
+#endif /* MSI_CONFIG_H */

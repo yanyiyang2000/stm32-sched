@@ -2,12 +2,12 @@ add_executable(
     firmware
     ${PROJECT_SOURCE_DIR}/CMSIS/Device/ST/STM32L4xx/Source/system_stm32l4xx.c
     ${PROJECT_SOURCE_DIR}/CMSIS/Device/ST/STM32L4xx/Source/startup_stm32l4xx.c
-    ${CMAKE_CURRENT_LIST_DIR}/Source/crt0.S
-    ${CMAKE_CURRENT_LIST_DIR}/Source/isr.c
-    ${CMAKE_CURRENT_LIST_DIR}/Source/msi_config.c
-    ${CMAKE_CURRENT_LIST_DIR}/Source/task_scheduler.c
+    ${PROJECT_SOURCE_DIR}/User/Source/crt0.S
+    ${PROJECT_SOURCE_DIR}/User/Source/isr.c
+    ${PROJECT_SOURCE_DIR}/User/Source/msi_config.c
+    ${PROJECT_SOURCE_DIR}/User/Source/task_scheduler.c
     ${CMAKE_CURRENT_LIST_DIR}/Source/demo_tasks.c
-    ${CMAKE_CURRENT_LIST_DIR}/main.c
+    ${CMAKE_CURRENT_LIST_DIR}/Source/main.c
 )
 
 target_include_directories(
@@ -16,5 +16,6 @@ target_include_directories(
     ${PROJECT_SOURCE_DIR}/CMSIS/Core/Include
     ${PROJECT_SOURCE_DIR}/CMSIS/Core/Include/m-profile
     ${PROJECT_SOURCE_DIR}/CMSIS/Device/ST/STM32L4xx/Include
+    ${PROJECT_SOURCE_DIR}/User/Include
     ${CMAKE_CURRENT_LIST_DIR}/Include
 )

@@ -50,8 +50,8 @@ __RAM_SIZE = 96K;
     <o1> Heap Size (in Bytes)  <0x0-0xFFFFFFFF:8>
   </h>
   -----------------------------------------------------------------------------*/
-__STACK_SIZE = 1024;
-__HEAP_SIZE  = 1024;
+__STACK_SIZE = 32K;
+__HEAP_SIZE  = 16K;
 
 /*
  *-------------------- <<< end of configuration section >>> -------------------
@@ -194,20 +194,19 @@ SECTIONS
     __bss_end__ = ALIGN(4);
   } > RAM
 
-  .heap ALIGN(8) (NOLOAD) :
+  .heap (NOLOAD) :
   {
     __HeapBottom = ALIGN(8);
     . = . + __HEAP_SIZE;
     __HeapLimit = ALIGN(8);
   } > RAM
 
-  .stack ALIGN(8) (NOLOAD) :
+  .stack (ORIGIN(RAM) + LENGTH(RAM) - __STACK_SIZE) (NOLOAD) :
   {
     __StackLimit = ALIGN(8);
     . = . + __STACK_SIZE;
     __StackTop = ALIGN(8);
   } > RAM
 
-  /* Check if data + heap + stack exceeds RAM limit */
-  ASSERT(__StackLimit >= __HeapLimit, "heap overflowed with stack")
+  ASSERT(__StackLimit >= __HeapLimit, ".data + .bss + .heap + .stack exceed RAM limit")
 }

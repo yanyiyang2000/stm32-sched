@@ -4,7 +4,7 @@
 /* CMSIS Core API */
 #include "cmsis_gcc.h"
 
-/* User API */
+/* Demo API */
 #include "demo_tasks.h"
 
 

@@ -11,7 +11,7 @@
 #include "msi_config.h"
 #include "task_scheduler.h"
 
-/* User Tasks */
+/* Demo Tasks */
 #include "demo_tasks.h"
 
 

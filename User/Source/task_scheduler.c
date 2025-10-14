@@ -27,18 +27,17 @@ void ts_initialize() {
     ts_curr_tcb = &ts_sentinel_tcb;
 }
 
-uint8_t ts_create_task(uint32_t *task_stack, uint32_t task_stack_size, uint32_t task) {
+uint8_t ts_create_task(uint32_t *task_stack, uint32_t task_stack_size, uint32_t task_addr) {
     /**
      * TODO:
-     * 1. It's kinda misleading why `task` is a u32 instead a func ptr.
-     * 2. The actual available task stack is (task_stack_size - TS_NUM_REGS) words.
-     * 3. This function is not idiot-proof if user provides a smaller task stack. (how to become idiot-proof at compile time?)
+     * 1. The actual available task stack is (task_stack_size - TS_NUM_REGS) words.
+     * 2. This function is not idiot-proof if user provides a smaller task stack. (how to become idiot-proof at compile time?)
      */
 
-    struct tcb *new_tcb; // The pointer to the a new TCB Node
+    struct tcb *new_tcb; // The pointer to the the new TCB Node
 
     /* Initialize the Task Stack */
-    task_stack[task_stack_size - 2] = task;         // PC
+    task_stack[task_stack_size - 2] = task_addr;    // PC
     task_stack[task_stack_size - 1] = 0x01000000;   // xPSR
 
     /* Initialize the new TCB Node if the Task List has vacancy */
