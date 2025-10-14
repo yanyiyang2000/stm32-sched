@@ -96,7 +96,7 @@ In the project root directory, run the `build.sh` script to build the firmware.
 # Flashing
 In the project root directory, use the following command:
 ```shell
-openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/User/<EXE_NAME>.elf verify reset exit"
+openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program ./build/Demo/<EXE_NAME>.elf verify reset exit"
 ```
 > [!NOTE]
 > Select the appropriate interface and target to replace `interface/stlink.cfg` and `target/stm32l4x.cfg` when porting this project to other devices.
