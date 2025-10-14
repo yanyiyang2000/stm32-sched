@@ -7,7 +7,7 @@
 
 
 # Introduction
-This is a demonstration of a custom Task Scheduler running on an ARMv7-M processor (Cortex-M4). It is assumed that the FPU of the processor is not enabled for the simplicity.
+This is a demonstration of a custom Task Scheduler running on an Armv7E-M processor (Cortex-M4). It is assumed that the FPU of the processor is not enabled for the simplicity.
 
 
 # Registers of Interest
@@ -94,7 +94,7 @@ Now the processor is in **Thread Mode** and **`PSP`** is used.
 
 
 # Implementation
-The Task Scheduler adopts round robin task switch: Tasks are stored in a linked-list-like Task List and are selected in the order they present in the Task List.
+The Task Scheduler adopts round robin task switch -- Tasks are stored in a linked-list-like Task List and are selected in the order they present in the Task List.
 
 For the moment, two functions are exposed to users:
 - `ts_initialize` for initializing the Task Scheduler
@@ -102,8 +102,8 @@ For the moment, two functions are exposed to users:
 
 
 # Caveats
-The `tcb` struct (defined in `task_scheduler.h`) has the data structure embedded, there are both pro and con:
-- Pro: A standalone struct for the data structure is not needed.
-- Con: If in the future we would like to change the way of storing Tasks, there might be a major modification to the code that involves the `tcb` struct.
+- The `tcb` struct (defined in `task_scheduler.h`) has the data structure embedded, there are both pro and con:
+    - Pro: A standalone struct for the data structure is not needed.
+    - Con: If in the future we would like to change the way of storing Tasks, there might be a major modification to the code that involves the `tcb` struct.
 
-The current context switch does not save the VFP registers used by the FPU, so the program is compiled with the `-mfloat-abi=soft` instead of `-mfloat-abi=hard`.
+- The current context switch does not save the VFP registers used by the FPU, so the program is compiled with the `-mfloat-abi=soft` instead of `-mfloat-abi=hard`.

@@ -1,7 +1,7 @@
 # Table of Contents
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-- [Porting to Other Cortex Devices](#porting-to-other-cortex-devices)
+- [Porting to Other Armv7-M Devices](#porting-to-other-armv7-m-devices)
 - [Setting Project Name](#setting-project-name)
 - [Building](#building)
 - [Flashing](#flashing)
@@ -28,9 +28,10 @@ The followings are the hardware, toolchain and build system used by the project.
 | Toolchain            | gcc                                      |
 | Build system         | cmake                                    |
 
-The project's source code is divided into two major directories:
-- The `CMSIS` directory contains header files and source code provided by [ARM](https://github.com/ARM-software/CMSIS_6/tree/main/CMSIS/Core) and [STMicroelectronics](https://github.com/STMicroelectronics/cmsis_device_l4) that are conforming to [CMSIS 6](https://arm-software.github.io/CMSIS_6/latest/General/index.html).
-- The `User` directory contains header files and source code for the demonstractions and C runtime startup code (`crt0.S`).
+The project's source code is divided into three major directories:
+- The `CMSIS` directory contains header files and source code provided by [Arm](https://github.com/ARM-software/CMSIS_6/tree/main/CMSIS/Core) and [STMicroelectronics](https://github.com/STMicroelectronics/cmsis_device_l4) that are conforming to [CMSIS 6](https://arm-software.github.io/CMSIS_6/latest/General/index.html).
+- The `User` directory contains header files and source code for the task scheduler implementation and C runtime startup code (`crt0.S`).
+- The `Demo` directory contains header files and source code for the demonstractions.
 
 
 # Prerequisites
@@ -158,7 +159,7 @@ target remote localhost:3333
 
 
 # References
-- [ARMv7-M Architecture Reference Manual (DDI 0403)](https://developer.arm.com/documentation/ddi0403/latest/)
+- [Armv7-M Architecture Reference Manual (DDI 0403)](https://developer.arm.com/documentation/ddi0403/latest/)
 - [Cortex-M4 Devices Generic User Guide (DUI 0553)](https://developer.arm.com/documentation/dui0553/latest/)
 - [STM32L47xxx Reference Manual (RM0351)](https://www.st.com/resource/en/reference_manual/rm0351-stm32l47xxx-stm32l48xxx-stm32l49xxx-and-stm32l4axxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
 - [STM32L476xx Datasheet (DS10198)](https://www.st.com/resource/en/datasheet/stm32l476je.pdf)
